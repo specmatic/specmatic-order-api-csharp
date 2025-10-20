@@ -13,7 +13,7 @@ public class ContractTests : IAsyncLifetime
     private static readonly string Pwd =
         Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.FullName ?? string.Empty;
     private readonly string _projectPath = Directory.GetParent(Pwd)?.FullName ?? string.Empty;
-    private const string ProjectName = "specmatic-order-api-csharp/specmatic-order-api-csharp.csproj";
+    private const string ProjectName = "specmatic-order-api-csharp";
     private const string TestContainerDirectory = "/usr/src/app";
 
     [Fact]
@@ -42,7 +42,7 @@ public class ContractTests : IAsyncLifetime
         Directory.CreateDirectory(localReportDirectory);
         
         _testContainer = new ContainerBuilder()
-            .WithImage("znsio/specmatic").WithCommand("test")
+            .WithImage("specmatic/specmatic").WithCommand("test")
             .WithCommand("--port=8090")
             .WithCommand("--host=host.testcontainers.internal")
             .WithCommand("--filter=PATH!='/internal/metrics'")
@@ -63,7 +63,8 @@ public class ContractTests : IAsyncLifetime
             StartInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
-                Arguments = $"run --project {_projectPath}/{ProjectName}",
+                Arguments = $"run",
+                WorkingDirectory = Path.Combine(_projectPath, ProjectName),
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -77,7 +78,7 @@ public class ContractTests : IAsyncLifetime
     private async Task StartDomainServiceStub()
     {
         _stubContainer = new ContainerBuilder()
-            .WithImage("znsio/specmatic").WithCommand("stub")
+            .WithImage("specmatic/specmatic").WithCommand("stub")
             .WithCommand("--examples=examples")
             .WithPortBinding(9000)
             .WithOutputConsumer(Consume.RedirectStdoutAndStderrToConsole())

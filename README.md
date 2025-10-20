@@ -25,22 +25,9 @@ The architecture diagram was created using the amazing free online SVG editor at
 
 ### How to run the application?
 
-1. Build the project using : `dotnet build`
-2. Run the application using : `dotnet run`
+1. CD into the project directory : `cd specmatic-order-api-csharp`
+2. Build the project using : `dotnet build`
+3. Run the application using : `dotnet run`
 
 ### How to test the application?
 1. Using `dotnet test`
-
-## Running with Docker
-
-### 1. Start Docker Desktop
-
-Ensure Docker Desktop is running on your machine.
-
-### 2. Run the Application using dotnet run
-
-To run the **.NET** application in Docker, execute the following command:
-```bash
-docker run --network host -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" \
--v "$PWD/build/reports/specmatic:/usr/src/app/build/reports/specmatic" \
-znsio/specmatic test --port=8090 --host=host.docker.internal

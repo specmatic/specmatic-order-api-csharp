@@ -22,7 +22,6 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpPost]
         public ActionResult<IdResponse> Create([FromBody] Order order)
         {
-            Console.WriteLine(order.Status.ToString());
             var orderId = _orderService.CreateOrder(order);
             return Ok(orderId);
         }
@@ -30,7 +29,6 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpPost("{id}")]
         public ActionResult Update(int id, [FromBody] Order order)
         {
-            Console.WriteLine(order.Status.ToString());
             _orderService.UpdateOrder(order,id);
             return Ok();
         }

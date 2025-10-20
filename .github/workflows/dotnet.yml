@@ -53,6 +53,27 @@ jobs:
       env:
         COVERLET_OUTPUT_FORMAT: cobertura
 
+    - name: Save Specmatic license
+      if: false
+      run: |
+        mkdir -p ~/.specmatic
+        echo "${{ secrets.SPECMATIC_LICENSE_KEY }}" > ~/.specmatic/specmatic-license.txt
+
+    - name: Run Specmatic Insights Build Reporter
+      if: false
+      run: |
+        docker run \
+          -v ${{ github.workspace }}:/workspace \
+          -v ~/.specmatic:/root/.specmatic \
+          -w /workspace \
+          specmatic/specmatic-reporter \
+          send-report \
+          --metadata build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} \
+          --branch-name ${{ github.ref_name }} \
+          --repo-name ${{ github.event.repository.name }} \
+          --repo-id ${{ github.repository_id }} \
+          --repo-url ${{ github.event.repository.html_url }}
+
     - name: Publish Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:

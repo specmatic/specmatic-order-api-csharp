@@ -1,7 +1,7 @@
 target/*
 .DS_Store
 *.iml
-build/*
+build/
 .idea/*
 /kafka-logs/
 /.specmatic/
@@ -10,7 +10,8 @@ bin/
 obj/
 build/reports/specmatic/
 /recordings_backup/
-specmatic-order-bff-csharp/build/
-specmatic-order-bff-csharp.sln.DotSettings
-specmatic-order-bff-csharp.sln.DotSettings.user
-specmatic-order-bff-csharp.test/build/
+specmatic-order-api-csharp/images/*
+specmatic-order-api-csharp/build/
+specmatic-order-api-csharp.sln.DotSettings
+specmatic-order-api-csharp.sln.DotSettings.user
+specmatic-order-api-csharp.test/build/
