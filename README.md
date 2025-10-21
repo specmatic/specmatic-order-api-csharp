@@ -9,7 +9,7 @@ BFF = Backend For Frontend, the API invoked by the HTTP calls in the client HTML
 
 This project contains the product API, which is used by a small ecommerce client application.
 
-Here is the [contract](https://github.com/znsio/specmatic-order-contracts/blob/main/io/specmatic/examples/store/openapi/api_order_v3.yaml) governing the interaction of the client with the product API.
+Here is the [contract](https://github.com/specmatic/specmatic-order-contracts/blob/main/io/specmatic/examples/store/openapi/api_order_v3.yaml) governing the interaction of the client with the product API.
 
 The architecture diagram was created using the amazing free online SVG editor at [Vectr](https://vectr.com).
 

@@ -54,18 +54,16 @@ jobs:
         COVERLET_OUTPUT_FORMAT: cobertura
 
     - name: Save Specmatic license
-      if: false
       run: |
         mkdir -p ~/.specmatic
         echo "${{ secrets.SPECMATIC_LICENSE_KEY }}" > ~/.specmatic/specmatic-license.txt
 
     - name: Run Specmatic Insights Build Reporter
-      if: false
       run: |
         docker run \
           -v ${{ github.workspace }}:/workspace \
           -v ~/.specmatic:/root/.specmatic \
-          -w /workspace \
+          -w /workspace/specmatic-order-api-csharp.test \
           specmatic/specmatic-reporter \
           send-report \
           --metadata build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} \
