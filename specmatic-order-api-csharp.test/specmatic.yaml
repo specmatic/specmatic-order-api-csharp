@@ -4,6 +4,9 @@ contracts:
       url: https://github.com/specmatic/specmatic-order-contracts.git
     provides:
       - io/specmatic/examples/store/openapi/api_order_v3.yaml
+test:
+  resiliencyTests:
+    enable: all
 report:
   formatters:
     - type: text

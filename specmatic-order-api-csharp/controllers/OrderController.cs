@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using specmatic_order_api_csharp.models;
 using specmatic_order_api_csharp.services;
 using System.Diagnostics.CodeAnalysis;
@@ -36,18 +33,7 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpGet("{id}")]
         public ActionResult<Order> Get(int id)
         {
-            try
-            {
-                return _orderService.GetOrder(id);
-            }
-            catch (KeyNotFoundException)
-            {
-                return NotFound(new { message = $"Order with ID {id} not found." });
-            }
-            catch (InvalidOperationException e) 
-            {
-                return NotFound(new { message =e.Message});
-            }
+            return _orderService.GetOrder(id);
         }
 
         [HttpDelete("{id}")]

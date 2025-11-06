@@ -34,19 +34,13 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 8.0.x
+        dotnet-version: 9.0.x
 
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build
       run: dotnet build --no-restore
-
-    - name: Setup Testcontainers Cloud Client
-      uses: atomicjar/testcontainers-cloud-setup-action@v1
-      with:
-        token: ${{ secrets.TC_CLOUD_TOKEN }}
-        wait: true
 
     - name: Test with Coverage
       run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" /p:CollectCoverage=true --results-directory ./TestResults

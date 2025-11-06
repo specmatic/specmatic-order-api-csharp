@@ -1,10 +1,5 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using specmatic_order_api_csharp.exceptions;
 using specmatic_order_api_csharp.models;
 using specmatic_order_api_csharp.services;
 using System.Diagnostics.CodeAnalysis;
@@ -22,30 +17,17 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
             _productService = productService;
         }
 
-        
+
         [HttpGet]
         public ActionResult<List<Product>> GetAllProducts([FromQuery] string? type)
         {
-            try
-            {
-                return _productService.GetAllProducts(type);
-            }
-            catch (KeyNotFoundException e) 
-            {
-                return NotFound(new {message = e.Message});
-            }
+            return _productService.GetAllProducts(type);
         }
+
         [HttpGet("{id}")]
         public ActionResult<Product> Get(int id)
         {
-            try
-            {
-                return _productService.GetProduct(id);
-            }
-            catch (KeyNotFoundException e) // Using KeyNotFoundException instead of NoSuchElementException
-            {
-                return NotFound(new { message = e.Message });
-            }
+            return _productService.GetProduct(id);
         }
 
         [HttpPost]
@@ -90,7 +72,7 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpPut("{id}/image")]
         [Consumes("multipart/form-data")]
         [Produces("application/json")]
-        public IActionResult UploadImage(IFormFile image,[FromForm]int id)
+        public IActionResult UploadImage(IFormFile image, int id)
         {
             if (image != null)
             {

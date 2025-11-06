@@ -1,8 +1,6 @@
-using System.ComponentModel;
 using System.Diagnostics;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Configurations;
-using DotNet.Testcontainers.Containers;
 
 namespace specmatic_order_bff_csharp.test.contract;
 
@@ -20,39 +18,38 @@ public class ContractTests : IAsyncLifetime
     public async Task ContractTestsAsync()
     {
         await RunContractTests();
+        var exit = await _testContainer.GetExitCodeAsync();
         var logs = await _testContainer.GetLogsAsync();
-        if (!logs.Stdout.Contains("Failures: 0"))
+
+        if (exit != 0 || !logs.Stdout.Contains("Failures: 0"))
         {
-            Assert.Fail("There are failing tests");
+            throw new Exception("Contract tests failed with exit code: " + exit);
         }
     }
 
     public async Task InitializeAsync()
     {
-        await TestcontainersSettings.ExposeHostPortsAsync(8090)
-            .ConfigureAwait(false);
-
         StartOrderApiService();
         await StartDomainServiceStub();
     }
 
     private async Task RunContractTests()
-    { 
+    {
         var localReportDirectory = Path.Combine(Pwd, "build", "reports");
         Directory.CreateDirectory(localReportDirectory);
-        
+
         _testContainer = new ContainerBuilder()
             .WithImage("specmatic/specmatic").WithCommand("test")
             .WithCommand("--port=8090")
-            .WithCommand("--host=host.testcontainers.internal")
+            .WithCommand("--host=host.docker.internal")
             .WithCommand("--filter=PATH!='/internal/metrics'")
             .WithOutputConsumer(Consume.RedirectStdoutAndStderrToConsole())
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilMessageIsLogged("Tests run:"))
             .WithBindMount(localReportDirectory, $"{TestContainerDirectory}/build/reports")
+            .WithExtraHost("host.docker.internal", "host-gateway")
             .WithBindMount(
                 $"{Pwd}/specmatic.yaml",
                 $"{TestContainerDirectory}/specmatic.yaml").Build();
-         
+
         await _testContainer.StartAsync().ConfigureAwait(true);
     }
 
@@ -85,12 +82,12 @@ public class ContractTests : IAsyncLifetime
             .WithExposedPort(9000)
             .WithReuse(true)
             .WithBindMount($"{Pwd}/examples/domain_service", $"{TestContainerDirectory}/examples")
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(9000))
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilExternalTcpPortIsAvailable(9000))
             .WithBindMount(
                 $"{Pwd}/specmatic.yaml",
                 $"{TestContainerDirectory}/specmatic.yaml").Build();
-        
-        await _stubContainer.StartAsync().ConfigureAwait(false);
+
+        await _stubContainer.StartAsync().ConfigureAwait(true);
     }
 
     public async Task DisposeAsync()
