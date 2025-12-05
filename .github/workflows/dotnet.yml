@@ -55,9 +55,8 @@ jobs:
     - name: Run Specmatic Insights Build Reporter
       run: |
         docker run \
-          -v ${{ github.workspace }}:/workspace \
+          -v ${{ github.workspace }}/specmatic-order-api-csharp.test:/usr/src/app \
           -v ~/.specmatic:/root/.specmatic \
-          -w /workspace/specmatic-order-api-csharp.test \
           specmatic/specmatic \
           send-report \
           --metadata build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} \
