@@ -9,8 +9,8 @@ public static class DB
 {
     private static Dictionary<int, Product> PRODUCTS = new()
     {
-        { 10, new Product { Id = 10, Name = "XYZ Phone", Type = "gadget", Inventory = 10 } },
-        { 20, new Product { Id = 20, Name = "Gemini", Type = "dog", Inventory = 10 } }
+        { 10, new Product { Id = 10, Name = "XYZ Phone", Type = ProductType.gadget, Inventory = 10 } },
+        { 20, new Product { Id = 20, Name = "Gemini", Type = ProductType.gadget, Inventory = 10 } }
     };
 
     private static Dictionary<int, string> PRODUCT_IMAGE = new()
@@ -21,8 +21,8 @@ public static class DB
 
     private static Dictionary<int, Order> ORDERS = new()
     {
-        { 10, new Order { Id = 10, Productid = 10, Count = 2, Status = "pending" } },
-        { 20, new Order { Id = 20, Productid = 10, Count = 1, Status =  "pending" } }
+        { 10, new Order { Id = 10, Productid = 10, Count = 2, Status = OrderStatus.pending } },
+        { 20, new Order { Id = 20, Productid = 10, Count = 1, Status = OrderStatus.pending } }
     };
 
     private static readonly Dictionary<string, User> USERS = new()
@@ -36,14 +36,14 @@ public static class DB
     {
         PRODUCTS = new Dictionary<int, Product>
         {
-            { 10, new Product { Id = 10, Name = "XYZ Phone", Type = "gadget", Inventory = 10 } },
-            { 20, new Product { Id = 20, Name = "Gemini", Type = "dog", Inventory = 10 } }
+            { 10, new Product { Id = 10, Name = "XYZ Phone", Type = ProductType.gadget, Inventory = 10 } },
+            { 20, new Product { Id = 20, Name = "Gemini", Type = ProductType.gadget, Inventory = 10 } }
         };
 
         ORDERS = new Dictionary<int, Order>
         {
-            { 10, new Order { Id = 10, Productid = 10, Count = 2, Status =  "pending"} },
-            { 20, new Order { Id = 20, Productid = 10, Count = 1, Status =  "pending" } }
+            { 10, new Order { Id = 10, Productid = 10, Count = 2, Status =  OrderStatus.pending } },
+            { 20, new Order { Id = 20, Productid = 10, Count = 1, Status =  OrderStatus.pending } }
         };
     }
 
@@ -73,11 +73,8 @@ public static class DB
         PRODUCTS.Remove(id);
     }
 
-    public static List<Product> FindProducts(string name = null, string type = null, string status = null)
+    public static List<Product> FindProducts(string name = null, ProductType? type = null, string status = null)
     {
-        if (type != null && !new List<string> { "book", "food", "gadget", "other" }.Contains(type))
-            throw new BadHttpRequestException(type);
-
         return PRODUCTS.Values
             .Where(product =>
                 (name == null || product.Name == name) &&
@@ -108,7 +105,7 @@ public static class DB
         ORDERS.Remove(id);
     }
 
-    public static List<Order> FindOrders(string status = null, int? productId = null)
+    public static List<Order> FindOrders(OrderStatus? status = null, int? productId = null)
     {
         return ORDERS.Values
             .Where(order => 

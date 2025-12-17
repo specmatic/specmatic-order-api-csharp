@@ -44,7 +44,7 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         }
 
         [HttpGet]
-        public ActionResult<List<Order>> Search([FromQuery] string? status, [FromQuery] int? productId)
+        public ActionResult<List<Order>> Search([FromQuery] OrderStatus? status, [FromQuery] int? productId)
         {
             var orders = _orderService.FindOrders(status, productId);
             return Ok(orders);

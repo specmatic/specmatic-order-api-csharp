@@ -11,7 +11,7 @@ namespace specmatic_order_api_csharp.services
             return DB.FindProduct(id);
         }
         
-        public List<Product> GetAllProducts(string type)
+        public List<Product> GetAllProducts(ProductType? type)
         {
             return DB.FindProducts(type:type);
         }

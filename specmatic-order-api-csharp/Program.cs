@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using specmatic_uuid_api.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 [ExcludeFromCodeCoverage]
 public class Program
@@ -35,14 +36,16 @@ public class Program
         builder.Services.AddControllers();
 
         // Customize the response for invalid model state
-        builder.Services.Configure<ApiBehaviorOptions>(options => {
+        builder.Services.Configure<ApiBehaviorOptions>(options =>
+        {
             options.InvalidModelStateResponseFactory = context =>
             {
                 var errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-                var response = new ErrorResponse { 
-                    TimeStamp = DateTime.UtcNow.ToString("o"), 
-                    Error = "Bad Request", 
-                    Message = string.Join(", ", errors) 
+                var response = new ErrorResponse
+                {
+                    TimeStamp = DateTime.UtcNow.ToString("o"),
+                    Error = "Bad Request",
+                    Message = string.Join(", ", errors)
                 };
                 return new BadRequestObjectResult(response);
             };

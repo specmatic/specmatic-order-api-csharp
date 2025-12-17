@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 using System.Diagnostics.CodeAnalysis;
 namespace specmatic_order_api_csharp.models;
@@ -14,7 +12,8 @@ public class Product
     public string Name { get; set; }
 
     [JsonPropertyName("type")]
-    public string Type { get; set; }
+    [JsonConverter(typeof(StrictStringEnumConverter<ProductType>))]
+    public ProductType Type { get; set; }
 
     [JsonPropertyName("inventory")]
     public int Inventory { get; set; }

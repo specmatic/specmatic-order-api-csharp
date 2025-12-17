@@ -19,7 +19,7 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
 
 
         [HttpGet]
-        public ActionResult<List<Product>> GetAllProducts([FromQuery] string? type)
+        public ActionResult<List<Product>> GetAllProducts([FromQuery] ProductType? type)
         {
             return _productService.GetAllProducts(type);
         }
@@ -33,15 +33,6 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpPost]
         public ActionResult<IdResponse> Create([FromBody] Product newProduct)
         {
-            if (string.IsNullOrWhiteSpace(newProduct.Type) || 
-                !Enum.TryParse<ProductType>(newProduct.Type, ignoreCase: true, out var productTypeEnum) || 
-                !Enum.IsDefined(typeof(ProductType), productTypeEnum))
-            {
-                var validTypes = string.Join(", ", Enum.GetNames(typeof(ProductType)));
-                return StatusCode(StatusCodes.Status400BadRequest, new { message = $"Invalid product type. Type must be one of: {validTypes}" });
-            }
-
-
             var productId = _productService.AddProduct(newProduct);
             return Ok(productId);
         }
@@ -49,18 +40,10 @@ namespace specmatic_order_api_csharp.controllers // Replace with your actual nam
         [HttpPost("{id}")]
         public ActionResult<IdResponse> Update([FromBody] Product updatedProduct,int id)
         {
-            if (string.IsNullOrWhiteSpace(updatedProduct.Type) || 
-                !Enum.TryParse<ProductType>(updatedProduct.Type, ignoreCase: true, out var productTypeEnum) || 
-                !Enum.IsDefined(typeof(ProductType), productTypeEnum))
-            {
-                var validTypes = string.Join(", ", Enum.GetNames(typeof(ProductType)));
-                return StatusCode(StatusCodes.Status400BadRequest, new { message = $"Invalid product type. Type must be one of: {validTypes}" });
-            }
-
-
             _productService.UpdateProduct(updatedProduct,id);
             return Ok();
         }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -20,7 +20,7 @@ namespace specmatic_order_api_csharp.tests
         {
             // Arrange
             int productId = 1;
-            var expectedProduct = new Product { Id = productId, Name = "Sample Product", Type = "Gadget" };
+            var expectedProduct = new Product { Id = productId, Name = "Sample Product", Type = ProductType.gadget };
 
             // Assuming DB.FindProduct is a static method, it will return the expected product
             DB.AddProduct(expectedProduct); // Adding the product to the DB for the test
@@ -36,7 +36,7 @@ namespace specmatic_order_api_csharp.tests
         public void GetAllProducts_ShouldReturnProducts_WhenTypeIsValid()
         {
             // Arrange
-            string productType = "gadget";
+            ProductType productType = ProductType.gadget;
             var expectedProducts = new List<Product>
             {
                 new Product { Id = 1, Name = "Product 1", Type = productType },
@@ -61,7 +61,7 @@ namespace specmatic_order_api_csharp.tests
         public void AddProduct_ShouldReturnIdResponse_WhenProductIsAdded()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "New Product", Type = "Food" };
+            var product = new Product { Id = 1, Name = "New Product", Type = ProductType.food };
 
             // Act
             var result = _productService.AddProduct(product);
@@ -75,10 +75,10 @@ namespace specmatic_order_api_csharp.tests
         public void UpdateProduct_ShouldUpdateProduct_WhenProductIsValid()
         {
             // Arrange
-            var product = new Product { Id = 1, Name = "Updated Product", Type = "Gadget" };
+            var product = new Product { Id = 1, Name = "Updated Product", Type = ProductType.gadget };
             DB.AddProduct(product); // Add the product to the DB
 
-            var updatedProduct = new Product { Id = 1, Name = "Updated Product", Type = "Electronics" };
+            var updatedProduct = new Product { Id = 1, Name = "Updated Product", Type = ProductType.gadget };
 
             // Act
             _productService.UpdateProduct(updatedProduct, 1);

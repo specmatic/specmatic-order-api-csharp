@@ -85,7 +85,7 @@ namespace specmatic_order_api_csharp.tests
         public void FindOrders_ShouldReturnListOfOrders_WhenStatusAndProductIdAreValid()
         {
             // Arrange
-            string status = "Pending";
+            OrderStatus status = OrderStatus.pending;
             int productId = 100;
 
             var expectedOrders = new List<Order>

@@ -31,7 +31,7 @@ namespace specmatic_order_api_csharp.services
             DB.DeleteOrder(id);
         }
 
-        public List<Order> FindOrders(string? status, int? productId)
+        public List<Order> FindOrders(OrderStatus? status, int? productId)
         {
             return DB.FindOrders(status, productId);
         }
