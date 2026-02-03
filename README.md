@@ -14,7 +14,7 @@ Here is the [contract](https://github.com/specmatic/specmatic-order-contracts/bl
 The architecture diagram was created using the amazing free online SVG editor at [Vectr](https://vectr.com).
 
 ## Tech
-1. .NET core
+1. .NET core 10
 2. Specmatic
 3. Docker Desktop
 
@@ -29,5 +29,16 @@ The architecture diagram was created using the amazing free online SVG editor at
 2. Build the project using : `dotnet build`
 3. Run the application using : `dotnet run`
 
+
+
 ### How to test the application?
 1. Using `dotnet test`
+
+2. Run the test inside container
+```docker run --rm \
+  -v "$(pwd)/specmatic-order-api-csharp.test/specmatic.yaml:/usr/src/app/specmatic.yaml" \
+  -v "$(pwd)/build/reports/specmatic:/usr/src/app/build/reports/specmatic" \
+  specmatic/specmatic test \
+  --host=host.docker.internal \
+  --port=8090
+```
