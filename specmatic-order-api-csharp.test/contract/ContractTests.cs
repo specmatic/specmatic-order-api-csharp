@@ -40,8 +40,6 @@ public class ContractTests : IAsyncLifetime
 
         _testContainer = new ContainerBuilder()
             .WithImage("specmatic/specmatic").WithCommand("test")
-            .WithCommand("--port=8090")
-            .WithCommand("--host=host.docker.internal")
             .WithCommand("--filter=PATH!='/internal/metrics'")
             .WithOutputConsumer(Consume.RedirectStdoutAndStderrToConsole())
             .WithBindMount(localReportDirectory, $"{TestContainerDirectory}/build/reports")

@@ -1,30 +1,52 @@
-version: 2
-contracts:
-  - git:
-      url: https://github.com/specmatic/specmatic-order-contracts.git
-    provides:
-      - io/specmatic/examples/store/openapi/api_order_v3.yaml
-test:
-  resiliencyTests:
-    enable: all
-report:
-  formatters:
-    - type: text
-      layout: table
-      lite: false
-      title: Specmatic Report
-      logo: assets/specmatic-logo.svg
-      logoAltText: Specmatic
-      heading: Contract Test Results
+version: 3
+systemUnderTest:
+  service:
+    $ref: "#/components/services/orderApiService"
+    runOptions:
+      $ref: "#/components/runOptions/orderApiService"
+specmatic:
+  governance:
+    report:
+      formats:
+        - html
       outputDirectory: ./build/reports/specmatic/html
-  types:
-    APICoverage:
-      OpenAPI:
-        successCriteria:
-          minThresholdPercentage: 70
-          maxMissedEndpointsInSpec: 4
-          enforce: true
-  successCriteria:
-    minThresholdPercentage: 70
-    maxMissedEndpointsInSpec: 4
-    enforce: true
+      # TODO(v2->v3): v2 formatter UI fields had no direct v3 equivalent in mapping:
+      # title: Specmatic Report
+      # logo: assets/specmatic-logo.svg
+      # logoAltText: Specmatic
+      # heading: Contract Test Results
+      # layout: table
+      # lite: false
+    successCriteria:
+      minCoveragePercentage: 70
+      maxMissedOperationsInSpec: 4
+      enforce: true
+  settings:
+    $ref: "#/components/settings/contractTests"
+components:
+  sources:
+    specsRepo:
+      git:
+        url: https://github.com/specmatic/specmatic-order-contracts.git
+  services:
+    orderApiService:
+      definitions:
+        - definition:
+            source:
+              $ref: "#/components/sources/specsRepo"
+            specs:
+              - spec:
+                  id: orderApiSpec
+                  path: io/specmatic/examples/store/openapi/api_order_v3.yaml
+  runOptions:
+    orderApiService:
+      openapi:
+        type: test
+        baseUrl: ${APP_URL:http://host.docker.internal:8090}
+        specs:
+          - spec:
+              id: orderApiSpec
+  settings:
+    contractTests:
+      test:
+        resiliencyTests: all
