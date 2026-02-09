@@ -9,14 +9,6 @@ specmatic:
     report:
       formats:
         - html
-      outputDirectory: ./build/reports/specmatic/html
-      # TODO(v2->v3): v2 formatter UI fields had no direct v3 equivalent in mapping:
-      # title: Specmatic Report
-      # logo: assets/specmatic-logo.svg
-      # logoAltText: Specmatic
-      # heading: Contract Test Results
-      # layout: table
-      # lite: false
     successCriteria:
       minCoveragePercentage: 70
       maxMissedOperationsInSpec: 4
@@ -43,6 +35,7 @@ components:
       openapi:
         type: test
         baseUrl: ${APP_URL:http://host.docker.internal:8090}
+        filter: PATH!='/internal/metrics'
         specs:
           - spec:
               id: orderApiSpec
@@ -50,3 +43,7 @@ components:
     contractTests:
       test:
         resiliencyTests: all
+  examples:
+    commonExamples:
+      directories:
+        - ./examples
