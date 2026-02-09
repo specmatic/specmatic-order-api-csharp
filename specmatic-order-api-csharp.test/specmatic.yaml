@@ -36,9 +36,6 @@ components:
         type: test
         baseUrl: ${APP_URL:http://host.docker.internal:8090}
         filter: PATH!='/internal/metrics'
-        specs:
-          - spec:
-              id: orderApiSpec
   settings:
     contractTests:
       test:
