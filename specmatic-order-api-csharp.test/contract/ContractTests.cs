@@ -75,7 +75,7 @@ public class ContractTests : IAsyncLifetime
     private async Task StartDomainServiceStub()
     {
         _stubContainer = new ContainerBuilder()
-            .WithImage("specmatic/specmatic").WithCommand("stub")
+            .WithImage("specmatic/specmatic").WithCommand("mock")
             .WithCommand("--examples=examples")
             .WithPortBinding(9000)
             .WithOutputConsumer(Consume.RedirectStdoutAndStderrToConsole())
