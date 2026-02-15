@@ -41,10 +41,7 @@ public class ContractTests : IAsyncLifetime
             .WithImage("specmatic/specmatic").WithCommand("test")
             .WithOutputConsumer(Consume.RedirectStdoutAndStderrToConsole())
             .WithEnvironment("APP_URL", "http://host.docker.internal:8090")
-            .WithBindMount(localReportDirectory, $"{TestContainerDirectory}/build/reports")
-            .WithBindMount(
-                $"{Pwd}/specmatic.yaml",
-                $"{TestContainerDirectory}/specmatic.yaml")
+            .WithBindMount($"{Pwd}",$"{TestContainerDirectory}")
             .WithExtraHost("host.docker.internal", "host-gateway")
             .Build();
 
