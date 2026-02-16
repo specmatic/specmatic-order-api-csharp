@@ -40,7 +40,3 @@ components:
     contractTests:
       test:
         resiliencyTests: all
-  examples:
-    commonExamples:
-      directories:
-        - ./examples
