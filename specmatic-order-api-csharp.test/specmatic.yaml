@@ -27,7 +27,9 @@ components:
             source:
               $ref: "#/components/sources/specsRepo"
             specs:
-              - io/specmatic/examples/store/openapi/api_order_v3.yaml
+              - spec:
+                  id: orderApiSpec
+                  path: io/specmatic/examples/store/openapi/api_order_v3.yaml
   runOptions:
     orderApiServiceTest:
       openapi:
