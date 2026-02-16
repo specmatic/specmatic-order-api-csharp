@@ -6,9 +6,6 @@ systemUnderTest:
       $ref: "#/components/runOptions/orderApiService"
 specmatic:
   governance:
-    report:
-      formats:
-        - html
     successCriteria:
       minCoveragePercentage: 70
       maxMissedOperationsInSpec: 4
@@ -40,7 +37,3 @@ components:
     contractTests:
       test:
         resiliencyTests: all
-  examples:
-    commonExamples:
-      directories:
-        - ./examples
