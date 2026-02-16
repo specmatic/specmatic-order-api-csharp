@@ -3,7 +3,7 @@ systemUnderTest:
   service:
     $ref: "#/components/services/orderApiService"
     runOptions:
-      $ref: "#/components/runOptions/orderApiService"
+      $ref: "#/components/runOptions/orderApiServiceTest"
 specmatic:
   governance:
     report:
@@ -27,11 +27,9 @@ components:
             source:
               $ref: "#/components/sources/specsRepo"
             specs:
-              - spec:
-                  id: orderApiSpec
-                  path: io/specmatic/examples/store/openapi/api_order_v3.yaml
+              - io/specmatic/examples/store/openapi/api_order_v3.yaml
   runOptions:
-    orderApiService:
+    orderApiServiceTest:
       openapi:
         type: test
         baseUrl: ${APP_URL:http://localhost:8090}
