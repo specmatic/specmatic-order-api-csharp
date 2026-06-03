@@ -96,7 +96,7 @@ jobs:
       uses: actions/upload-artifact@v6
       with:
         name: html-report
-        path: specmatic-order-api-csharp.test/build/reports/specmatic/html
+        path: specmatic-order-api-csharp.test/build/reports/specmatic/test/html
 
 
     

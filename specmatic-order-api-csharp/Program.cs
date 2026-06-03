@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Mvc;
 using specmatic_uuid_api.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 [ExcludeFromCodeCoverage]
 public class Program
@@ -36,6 +37,7 @@ public class Program
         builder.Services.AddControllers();
 
         // Customize the response for invalid model state
+        builder.Services.AddSingleton<IClientErrorFactory, JsonClientErrorFactory>();
         builder.Services.Configure<ApiBehaviorOptions>(options =>
         {
             options.InvalidModelStateResponseFactory = context =>
