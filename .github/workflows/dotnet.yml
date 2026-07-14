@@ -56,23 +56,27 @@ jobs:
     - name: Run Specmatic Insights Build Reporter
       if: github.ref == 'refs/heads/main'
       run: |
-        docker run \
-          -v ${{ github.workspace }}:/usr/src/app \
-          -v ~/.specmatic:/root/.specmatic \
-          specmatic/specmatic \
-          send-report \
-          --metadata build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} \
-          --branch-name ${{ github.ref_name }} \
-          --repo-name ${{ github.event.repository.name }} \
-          --repo-id ${{ github.repository_id }} \
-          --repo-url ${{ github.event.repository.html_url }}
+        docker run --rm \
+          -e GIT_DISCOVERY_ACROSS_FILESYSTEM=1 \
+          -e GIT_CONFIG_COUNT=1 \
+          -e GIT_CONFIG_KEY_0=safe.directory \
+          -e GIT_CONFIG_VALUE_0=/usr/src/app \
+          -v "${{ github.workspace }}:/usr/src/app" \
+          -v ~/.specmatic:/root/.specmatic:ro \
+          -w /usr/src/app/specmatic-order-api-csharp.test \
+          specmatic/specmatic send-report \
+          --metadata "build_url=${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+          --branch-name "${{ github.ref_name }}" \
+          --repo-name "${{ github.event.repository.name }}" \
+          --repo-id "${{ github.repository_id }}" \
+          --repo-url "${{ github.event.repository.html_url }}"
 
     - name: Publish Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
       with:
         filename: "TestResults/*/coverage.cobertura.xml"
         badge: true
-        fail_below_min: false 
+        fail_below_min: false
         format: markdown
         hide_branch_rate: false
         hide_complexity: false
@@ -91,7 +95,7 @@ jobs:
       run: |
         echo "Code Coverage Summary" >> $GITHUB_STEP_SUMMARY
         cat code-coverage-results.md >> $GITHUB_STEP_SUMMARY
-    
+
     - name: Upload HTML Test Report
       uses: actions/upload-artifact@v6
       with:
