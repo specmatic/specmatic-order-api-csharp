@@ -57,7 +57,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: |
         docker run \
-          -v ${{ github.workspace }}/specmatic-order-api-csharp.test:/usr/src/app \
+          -v ${{ github.workspace }}:/usr/src/app \
           -v ~/.specmatic:/root/.specmatic \
           specmatic/specmatic \
           send-report \
